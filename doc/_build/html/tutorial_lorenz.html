@@ -1,0 +1,187 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial: Lorenz &mdash; cnspy 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            cnspy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="whycns.html">Why CNS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lorenz63_eqs.html">Example: Lorenz63 Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Trouble shooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Utilities.html">Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cnspy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tutorial: Lorenz</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tutorial_lorenz.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial-lorenz">
+<h1>Tutorial: Lorenz<a class="headerlink" href="#tutorial-lorenz" title="Link to this heading"></a></h1>
+<section id="problem-description">
+<h2>Problem Description<a class="headerlink" href="#problem-description" title="Link to this heading"></a></h2>
+<p>As a first tutorial we will use the famous equations Lorenz equations.
+The governing ODEs are:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned} \dot{x}(t) &amp; = \sigma [y(t) - x(t)]\\\dot{y}(t) &amp; = R x(t) - y(t) -x(t)z(t)\\\dot{z}(t) &amp; = x(t)y(t) - b z(t)\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma, R, b\)</span> are physical parameters,  the dot denotes the differentiation with respect to the time <span class="math notranslate nohighlight">\(t\)</span>, respectively.</p>
+</section>
+<section id="inputing-the-lorenz-model">
+<h2>Inputing the Lorenz Model<a class="headerlink" href="#inputing-the-lorenz-model" title="Link to this heading"></a></h2>
+<p>To use <cite>cnspy</cite> generate the cns code, you need to tell <cite>cnspy</cite> what the functions will be calculate.</p>
+<p>Firstly, we importing all necessary packages:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sympy</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">from</span> <span class="nn">cnspy</span> <span class="kn">import</span> <span class="n">cns</span>
+<span class="kn">from</span> <span class="nn">cnspy</span> <span class="kn">import</span> <span class="n">method</span>
+</pre></div>
+</div>
+<p>Then, we create the Lorenz equations through <cite>Sympy</cite>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;t&#39;</span><span class="p">)</span>
+<span class="n">sigma</span><span class="p">,</span><span class="n">R</span><span class="p">,</span><span class="n">B</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\sigma, R, B&#39;</span><span class="p">)</span>
+<span class="n">u</span><span class="o">=</span><span class="n">sp</span><span class="o">.</span><span class="n">symarray</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">f1</span><span class="o">=</span><span class="n">sigma</span><span class="o">*</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">f2</span><span class="o">=</span><span class="n">R</span><span class="o">*</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">f3</span><span class="o">=</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">B</span><span class="o">*</span><span class="n">u</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">fun</span><span class="o">=</span><span class="p">[</span><span class="n">f1</span><span class="p">,</span><span class="n">f2</span><span class="p">,</span><span class="n">f3</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="generate-cns-c-code-of-lorenz-equations">
+<h2>Generate CNS C code of Lorenz equations<a class="headerlink" href="#generate-cns-c-code-of-lorenz-equations" title="Link to this heading"></a></h2>
+<p>To generate the CNS code, just simply use the cns function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lorenz</span><span class="o">=</span><span class="n">cns</span><span class="p">(</span><span class="n">funcs</span><span class="o">=</span><span class="n">fun</span><span class="p">,</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Lorenz&quot;</span><span class="p">,</span>\
+        <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">(</span><span class="s1">&#39;TS&#39;</span><span class="p">,</span><span class="n">order</span><span class="o">=</span><span class="mi">488</span><span class="p">,</span><span class="n">wordsize</span><span class="o">=</span><span class="mi">3072</span><span class="p">),</span>\
+        <span class="n">inits</span><span class="o">=</span><span class="p">[[</span><span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="s2">&quot;-15.8&quot;</span><span class="p">],[</span><span class="n">u</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="s2">&quot;-17.48&quot;</span><span class="p">],[</span><span class="n">u</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span><span class="s2">&quot;35.64&quot;</span><span class="p">]],</span>\
+        <span class="n">paras</span><span class="o">=</span><span class="p">[[</span><span class="n">sigma</span><span class="p">,</span><span class="s2">&quot;10&quot;</span><span class="p">],[</span><span class="n">R</span><span class="p">,</span><span class="s2">&quot;28&quot;</span><span class="p">],[</span><span class="n">B</span><span class="p">,</span><span class="s2">&quot;8/3&quot;</span><span class="p">]],</span>\
+        <span class="n">tspan</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1000</span><span class="p">),</span>\
+        <span class="n">saveat</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>\
+        <span class="n">lyap</span><span class="o">=</span><span class="mf">0.91</span><span class="p">,</span>\
+        <span class="n">adaptive</span><span class="o">=</span><span class="n">adaptive</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">,</span><span class="s1">&#39;order&#39;</span><span class="p">,</span><span class="s1">&#39;wordsize&#39;</span><span class="p">,</span><span class="n">delta_T</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">remaining_T</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span><span class="n">gamma</span><span class="o">=</span><span class="mf">1.1</span><span class="p">),</span>\
+        <span class="n">mpi</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>\
+        <span class="n">numofprocessor</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In this function, we set the method by the <cite>method</cite> class in <cite>cnspy</cite>, and the order of the taylor series and the word size of the all variable is set to be <cite>488</cite> and <cite>3072</cite>. The initial conditions (<span class="math notranslate nohighlight">\(x=-15.8\)</span>, <span class="math notranslate nohighlight">\(y=-17.48\)</span>, <span class="math notranslate nohighlight">\(z=35.64\)</span>) and the parameters (<span class="math notranslate nohighlight">\(\sigma=10\)</span>, <span class="math notranslate nohighlight">\(R=28\)</span>, <span class="math notranslate nohighlight">\(B=\frac{8}{3}\)</span>) are also declared. Besides, the mpi flag is set to be true to generate the mpi version of the CNS code.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The word size of the input is in binary digits, and the word size <cite>3072</cite> will be <cite>924</cite> in decimal digits. The conversion formula is: <span class="math notranslate nohighlight">\(P_{dec} = P_{bin}\cdot \lg 2\)</span>. It is worth mentioning that the double accuracy is 15 decimal places ( <span class="math notranslate nohighlight">\(52\cdot\lg 2=15\)</span>).</p>
+</div>
+<p>Finally, the code will be generated by calling the <cite>generate_c_code()</cite>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lorenz</span><span class="o">.</span><span class="n">generate_c_code</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="running-the-lorenz-c-code">
+<h2>Running the Lorenz C code<a class="headerlink" href="#running-the-lorenz-c-code" title="Link to this heading"></a></h2>
+<p>Now, we have create the c code of the Lorenz equations with Taylor method. To run it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">Lorenz</span><span class="o">/</span><span class="n">ccode</span><span class="o">/</span>
+<span class="n">make</span>
+<span class="n">mpirun</span> <span class="o">-</span><span class="n">n</span> <span class="mi">4</span> <span class="n">Lorenz</span>
+</pre></div>
+</div>
+<p>This will calculate the Lorenz equations and print the solutions to the <code class="docutils literal notranslate"><span class="pre">Lorenz/ans/</span></code> folder.</p>
+<p>Or you can use cnspy.cluster to run the code on the cluster:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cnspy</span> <span class="kn">import</span> <span class="n">cluster</span>
+<span class="n">HN</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">ssh</span><span class="p">()</span>
+<span class="n">HN</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+<span class="n">SL</span> <span class="o">=</span> <span class="n">cluster</span><span class="o">.</span><span class="n">slurm_script</span><span class="p">(</span><span class="n">node</span><span class="o">=</span><span class="n">HN</span><span class="o">.</span><span class="n">idle_node</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">qos</span><span class="o">=</span><span class="s1">&#39;super&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">=</span><span class="n">lorenz</span><span class="o">.</span><span class="n">numofprocessor</span><span class="p">,</span> <span class="n">jobname</span> <span class="o">=</span> <span class="n">lorenz</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="n">SL</span><span class="o">.</span><span class="n">clear_script</span><span class="p">(</span><span class="n">lorenz</span><span class="o">.</span><span class="n">ccodepath</span><span class="p">)</span>
+<span class="n">SL</span><span class="o">.</span><span class="n">write_script</span><span class="p">(</span><span class="n">lorenz</span><span class="o">.</span><span class="n">ccodepath</span><span class="p">,</span><span class="n">mlx4_0</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">HN</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;mkdir -p ~/cnspy_ssh/lorenz63&#39;</span><span class="p">)</span>
+<span class="n">HN</span><span class="o">.</span><span class="n">upload_directory</span><span class="p">(</span><span class="n">lorenz</span><span class="o">.</span><span class="n">parrentpath</span><span class="p">,</span><span class="s1">&#39;/data01/home/zhangbo/cnspy_ssh/lorenz63&#39;</span><span class="p">)</span>
+<span class="n">HN</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cd ~/cnspy_ssh/lorenz63/ccode; make; </span><span class="si">{</span><span class="n">SL</span><span class="o">.</span><span class="n">submit_command</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (C) 2023 Shanghai Jiao Tong University and Authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

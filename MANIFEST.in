@@ -1,0 +1,2 @@
+include cnspy/*.py
+include cnspy/c/*

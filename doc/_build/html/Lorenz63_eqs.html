@@ -1,0 +1,587 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Example: Lorenz63 Equations &mdash; cnspy 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Trouble shooting" href="troubleshooting.html" />
+    <link rel="prev" title="Theory" href="theory.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            cnspy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="whycns.html">Why CNS?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Example: Lorenz63 Equations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Problem-Description">Problem Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Inputing-the-Lorenz-Model">Inputing the Lorenz Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Generate-CNS-C-code-of-Lorenz-equations">Generate CNS C code of Lorenz equations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Run-the-job-on-a-cluster">Run the job on a cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Plot-the-results">Plot the results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Trouble shooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Utilities.html">Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cnspy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Example: Lorenz63 Equations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Lorenz63_eqs.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Example:-Lorenz63-Equations">
+<h1>Example: Lorenz63 Equations<a class="headerlink" href="#Example:-Lorenz63-Equations" title="Link to this heading"></a></h1>
+<section id="Problem-Description">
+<h2>Problem Description<a class="headerlink" href="#Problem-Description" title="Link to this heading"></a></h2>
+<p>As a first tutorial we will use the famous equations Lorenz equations. The governing ODEs are:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\dot{x_1}(t) = \sigma (x_2(t) - x_1(t)), \\
+\dot{x_2}(t) = R x_1(t) - x_2(t) -x_1(t)x_3(t), \\
+\dot{x_3}(t) = x_1(t)x_2(t) - b x_3(t),\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma, R, b\)</span> are physical parameters, the dot denotes the differentiation with respect to the time <span class="math notranslate nohighlight">\(t\)</span>, respectively.</p>
+</section>
+<section id="Inputing-the-Lorenz-Model">
+<h2>Inputing the Lorenz Model<a class="headerlink" href="#Inputing-the-Lorenz-Model" title="Link to this heading"></a></h2>
+<p>To use <code class="docutils literal notranslate"><span class="pre">cnspy</span></code> generate the cns code, you need to tell <code class="docutils literal notranslate"><span class="pre">cnspy</span></code> what the functions will be calculate.</p>
+<p>Firstly, we importing all necessary packages:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import sympy as sp
+import time
+from cnspy import cns
+from cnspy import method
+from cnspy import adaptive, adaptive_parameters
+import mpmath
+mpmath.mp.dps =500
+</pre></div>
+</div>
+</div>
+<p>Then, we create the Lorenz equations through <code class="docutils literal notranslate"><span class="pre">Sympy</span></code>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>t = sp.symbols(r&#39;t&#39;)
+sigma,R,B = sp.symbols(r&#39;\sigma, R, B&#39;)
+u=sp.symarray(&#39;x&#39;, 3)
+f1=sigma*(u[1]-u[0])
+f2=R*u[0]-u[1]-u[0]*u[2]
+f3=u[0]*u[1]-B*u[2]
+fun=[f1,f2,f3]
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Generate-CNS-C-code-of-Lorenz-equations">
+<h2>Generate CNS C code of Lorenz equations<a class="headerlink" href="#Generate-CNS-C-code-of-Lorenz-equations" title="Link to this heading"></a></h2>
+<p>To generate the CNS code, just simply use the cns function, and the simulation is set up with several parameters and configurations as detailed below:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lorenz63</span></code>: This is the variable where the simulation object is stored.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cns(funcs=fun,</span> <span class="pre">name=&quot;lorenz63&quot;,</span> <span class="pre">...)</span></code>: The <code class="docutils literal notranslate"><span class="pre">cns</span></code> function is called to initialize the simulation. The <code class="docutils literal notranslate"><span class="pre">funcs=fun</span></code> argument specifies the function(s) used for the system of equations. The name of the simulation is set to <code class="docutils literal notranslate"><span class="pre">&quot;lorenz63&quot;</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">method=method('TS')</span></code>: The method used for solving the equations is specified as <code class="docutils literal notranslate"><span class="pre">'TS'</span></code> (likely referring to a time-stepping method or a particular solver).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inits=[[u[0],&quot;-15.8&quot;],</span> <span class="pre">[u[1],&quot;-17.48&quot;],</span> <span class="pre">[u[2],&quot;35.64&quot;]]</span></code>: This defines the initial conditions for the system. The three initial values correspond to the state variables of the Lorenz system, presumably representing the initial values for the three variables (<code class="docutils literal notranslate"><span class="pre">u[0]</span></code>, <code class="docutils literal notranslate"><span class="pre">u[1]</span></code>, <code class="docutils literal notranslate"><span class="pre">u[2]</span></code>) at time <code class="docutils literal notranslate"><span class="pre">t=0</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">paras=[[sigma,&quot;10&quot;],</span> <span class="pre">[R,&quot;28&quot;],</span> <span class="pre">[B,&quot;8/3&quot;]]</span></code>**: This defines the parameters of the Lorenz-63 system.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tspan=(0,1000)</span></code>: The simulation will run from time <code class="docutils literal notranslate"><span class="pre">t=0</span></code> to <code class="docutils literal notranslate"><span class="pre">t=1000</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">saveat=0.1</span></code>: Data will be saved at intervals of 0.1 units of time.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lyap=0.91</span></code>: A parameter related to the Lyapunov exponent, which measures the rate of separation of trajectories in chaotic systems.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">adaptive=adaptive('t','order','wordsize',delta_T=50,remaining_T=300,gamma=1.1)</span></code>: This sets the adaptive control for the simulation, specifying:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">delta_T</span> <span class="pre">=</span> <span class="pre">50</span></code>: The changing interval of the number of significant digits and order.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">remaining_T</span> <span class="pre">=</span> <span class="pre">300</span></code>: The remaining time for the stabilization.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gamma</span> <span class="pre">=</span> <span class="pre">1.1</span></code>: The safety factor larger than 1.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mpi=True</span></code>: This indicates that the simulation will be parallelized using MPI (Message Passing Interface), enabling the use of multiple processors.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">run_os='posix'</span></code>: Specifies the operating system to run the simulation, in this case, POSIX-compliant systems (e.g., Linux or macOS).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">printprecision=500</span></code>: The precision of the printed output is set to 500 decimal places.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numofprocessor=64</span></code>: The simulation is configured to use 64 processors for parallel computation.</p></li>
+</ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lorenz63=cns(funcs=fun,name=&quot;lorenz63&quot;,\
+           method=method(&#39;TS&#39;),\
+           inits=[[u[0],&quot;-15.8&quot;],[u[1],&quot;-17.48&quot;],[u[2],&quot;35.64&quot;]],\
+           paras=[[sigma,&quot;10&quot;],[R,&quot;28&quot;],[B,&quot;8/3&quot;]],\
+           tspan=(0,1000),\
+           saveat=0.1,\
+           lyap=0.91,\
+           adaptive=adaptive(&#39;t&#39;,&#39;order&#39;,&#39;wordsize&#39;,delta_T=50,remaining_T=300,gamma=1.1),\
+           mpi=True,\
+           run_os= &#39;posix&#39;,\
+           printprecision= 500,\
+           numofprocessor=64)
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The word size of the input is in binary digits, and the word size <code class="docutils literal notranslate"><span class="pre">3072</span></code> will be <code class="docutils literal notranslate"><span class="pre">924</span></code> in decimal digits. The conversion formula is: :math:<code class="docutils literal notranslate"><span class="pre">P_{dec}</span> <span class="pre">=</span> <span class="pre">P_{bin}\cdot</span> <span class="pre">\lg</span> <span class="pre">2</span></code>. It is worth mentioning that the double accuracy is 15 decimal places ( :math:<code class="docutils literal notranslate"><span class="pre">52\cdot\lg</span> <span class="pre">2=15</span></code>).</p>
+</div>
+<p>Finally, the code will be generated by calling the <code class="docutils literal notranslate"><span class="pre">generate_c_code()</span></code>:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lorenz63.generate_c_code()
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Run-the-job-on-a-cluster">
+<h2>Run the job on a cluster<a class="headerlink" href="#Run-the-job-on-a-cluster" title="Link to this heading"></a></h2>
+<p>Then, we can run the code on a cluster with 64 processors. You can use the following code to do that:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from cnspy import cluster
+SL = cluster.slurm_script(node=&#39;cu10&#39;, qos=&#39;super&#39;, np=lorenz63.numofprocessor, jobname = lorenz63.name)
+HN = cluster.ssh(config_path = &#39;&lt;path_to_your_config_file&gt;&#39;)
+lorenz63.run(HN,SL)
+</pre></div>
+</div>
+</div>
+<p>And ofcourse, you can run the code on your local machine:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>lorenz63/ccode/
+make
+mpirun<span class="w"> </span>-n<span class="w"> </span><span class="m">4</span><span class="w"> </span>lorenz63
+</pre></div>
+</div>
+<p>Finally, we can read the data and generate a RK4 solution to compare:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#read result
+lorenz63.read_cnssol()
+#rk4 result
+lorenz63.quick_run()
+</pre></div>
+</div>
+</div>
+<p>Similarly, we can run the Lorenz96 model only adaptive in time to generate a examine CNS case with higher order and number of significant digits:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lorenz63_higher=cns(funcs=fun,name=&quot;lorenz63_higher&quot;,\
+           method=method(&#39;TS&#39;,order=800,nosd=500),\
+           inits=[[u[0],&quot;-15.8&quot;],[u[1],&quot;-17.48&quot;],[u[2],&quot;35.64&quot;]],\
+           paras=[[sigma,&quot;10&quot;],[R,&quot;28&quot;],[B,&quot;8/3&quot;]],\
+           tspan=(0,1000),\
+           saveat=0.1,\
+           lyap=0.91,\
+           adaptive=adaptive(&#39;t&#39;),\
+           mpi=True,\
+           printprecision= 500,\
+           numofprocessor=64)
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lorenz63_higher.generate_c_code()
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from cnspy import cluster
+SL = cluster.slurm_script(node=&#39;cu5&#39;, qos=&#39;super&#39;, np=lorenz63_higher.numofprocessor, jobname = lorenz63_higher.name)
+HN = cluster.ssh()
+lorenz63_higher.run(HN,SL)
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#read result
+lorenz63_higher.read_cnssol()
+#rk4 result
+lorenz63_higher.quick_run()
+</pre></div>
+</div>
+</div>
+<p>Then, to compare the adaptive in order and wordsize, we can use the following code:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lorenz63_fix=cns(funcs=fun,name=&quot;lorenz63_fix&quot;,\
+           method=method(&#39;TS&#39;,order=617,nosd=411),\
+           inits=[[u[0],&quot;-15.8&quot;],[u[1],&quot;-17.48&quot;],[u[2],&quot;35.64&quot;]],\
+           paras=[[sigma,&quot;10&quot;],[R,&quot;28&quot;],[B,&quot;8/3&quot;]],\
+           tspan=(0,1000),\
+           saveat=0.1,\
+           lyap=0.91,\
+           adaptive=adaptive(&#39;t&#39;),\
+           mpi=True,\
+           printprecision= 500,\
+           numofprocessor=64)
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>lorenz63_fix.generate_c_code()
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>from cnspy import cluster
+SL = cluster.slurm_script(node=&#39;cu10&#39;, qos=&#39;super&#39;, np=lorenz63_fix.numofprocessor, jobname = lorenz63_fix.name)
+HN = cluster.ssh()
+lorenz63_fix.run(HN,SL)
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#read result
+lorenz63_fix.read_cnssol()
+#rk4 result
+lorenz63_fix.quick_run()
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Plot-the-results">
+<h2>Plot the results<a class="headerlink" href="#Plot-the-results" title="Link to this heading"></a></h2>
+<p>Now, it’s time to compare and plot the results.</p>
+<p>Firstly, we define the relative error function by:</p>
+<div class="math notranslate nohighlight">
+\[\varepsilon_r(t) = \dfrac{\sum_{i=1}^{N_d}\left| x_i^{\prime}(t) - x_i(t) \right|}{\sum_{i=1}^{N_d}\left| x_i^{\prime}(t) \right|},\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_d\)</span> is the number of the variable~(i.e. dimensions of the model), <span class="math notranslate nohighlight">\(x_i^{'}(t)\)</span> and <span class="math notranslate nohighlight">\(x_i(t)\)</span> are two CNS results with different level of the background numerical noise, respectively.</p>
+<p>The code can be defined by:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import sympy as sp
+def relative_error(y1, y2):
+    for j in range(len(y1[:,0])):
+        if j == 0:
+            era = [sp.Float(abs(y1[j,i] - y2[j,i])) for i in range(len(y1[0,:]))]
+            erb = [sp.Float(abs(y2[j,i])) for i in range(len(y1[0,:]))]
+        else:
+            era = [ era[i] + sp.Float(abs(y1[j,i] - y2[j,i])) for i in range(len(y1[0,:]))]
+            erb = [ erb[i] + sp.Float(abs(y2[j,i])) for i in range(len(y1[0,:]))]
+    return [era[i] / erb[i] for i in range(len(era))]
+</pre></div>
+</div>
+</div>
+<p>Then, we can plot the relative error of the three method via the examine case:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import matplotlib.pyplot as plt
+from matplotlib import rc
+rc(&quot;legend&quot;,fancybox=False)
+rc(&#39;text&#39;, usetex=True)
+rc(&#39;text.latex&#39;, preamble=r&#39;\usepackage{amsmath} \boldmath&#39;)
+rc(&#39;patch&#39;,linewidth=2)
+font = {&#39;family&#39; : &#39;serif&#39;,
+        &#39;serif&#39;:[&#39;Times&#39;],
+        &#39;weight&#39; : &#39;bold&#39;,
+        &#39;size&#39;   : 16}
+rc(&#39;font&#39;, **font)
+from matplotlib.ticker import FuncFormatter
+
+x = lorenz63.cnssol.t
+y1 = relative_error(lorenz63.cnssol.y, lorenz63_higher.cnssol.y)
+y2 = relative_error(lorenz63_fix.cnssol.y, lorenz63_higher.cnssol.y)
+y3 = relative_error(lorenz63.qrsol.y, lorenz63_higher.cnssol.y)
+def log_formatter(x, pos):
+    return &quot;$10^{{{:d}}}$&quot;.format(int(x))
+
+formatter = FuncFormatter(log_formatter)
+
+fig, ax = plt.subplots()
+
+y11 = list(map(lambda x:sp.log(x, 10), y1))
+y22 = list(map(lambda x:sp.log(x, 10), y2))
+y33 = list(map(lambda x:sp.log(x, 10), y3))
+ax.plot(x, y11,label=r&#39;\texttt{CNSPy}(adaptive)&#39;,linestyle=&quot;-&quot;,linewidth=2,color=&quot;blue&quot;)
+ax.plot(x, y22,label=r&#39;\texttt{CNSPy}(fix)&#39;,linestyle=&quot;-&quot;,linewidth=2,color=&quot;red&quot;)
+ax.plot(x, y33,label=r&#39;RKwD&#39;,linestyle=&quot;-&quot;,linewidth=2,color=&quot;green&quot;)
+ax.yaxis.set_major_formatter(formatter)
+ax.set_xlim(0,1000)
+ax.set_xlabel(r&#39;$\boldsymbol{t}$&#39;, fontsize=22, fontweight=&#39;bold&#39;)
+ax.set_ylabel(r&#39;$\boldsymbol{\epsilon_r}$&#39;, fontsize=22, fontweight=&#39;bold&#39;)
+ax.tick_params(direction=&quot;in&quot;,top=True,right=True,width=2)
+ax.legend(edgecolor=&quot;inherit&quot;,loc=&quot;best&quot;)
+for location in  [&quot;left&quot;, &quot;right&quot;, &quot;top&quot;, &quot;bottom&quot;]:
+    ax.spines[location].set_linewidth(2)
+
+fig.savefig(&quot;lorenz63_error.eps&quot;,bbox_inches=&#39;tight&#39;)
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+The PostScript backend does not support transparency; partially transparent artists will be rendered opaque.
+Failed to find a Ghostscript installation.  Distillation step skipped.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/Lorenz63_eqs_32_1.png" src="_images/Lorenz63_eqs_32_1.png" />
+</div>
+</div>
+<p>We can also check the last 20 unit time of the simulation:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>#plot phase space
+import matplotlib.pyplot as plt
+from matplotlib import rc
+rc(&quot;legend&quot;,fancybox=False)
+rc(&#39;text&#39;, usetex=True)
+rc(&#39;text.latex&#39;, preamble=r&#39;\usepackage{amsmath} \boldmath&#39;)
+rc(&#39;patch&#39;,linewidth=2)
+font = {&#39;family&#39; : &#39;serif&#39;,
+        &#39;serif&#39;:[&#39;Times&#39;],
+        &#39;weight&#39; : &#39;bold&#39;,
+        &#39;size&#39;   : 16}
+rc(&#39;font&#39;, **font)
+fig, ax = plt.subplots()
+ax.plot(lorenz63.cnssol.t[9800:10000],lorenz63.cnssol.y[0,9800:10000],label=r&#39;\texttt{CNSPy}(adaptive)&#39;,linestyle=&quot;-&quot;,linewidth=2,color=&quot;blue&quot;)
+ax.plot(lorenz63_higher.cnssol.t[9800:10000],lorenz63_higher.cnssol.y[0,9800:10000],label=r&#39;\texttt{CNSPy}(examine)&#39;,linestyle=&quot;--&quot;,linewidth=2,color=&quot;red&quot;)
+ax.plot(lorenz63.qrsol.t[9800:10000],lorenz63.qrsol.y[0,9800:10000],label=r&#39;RKwD&#39;,linestyle=&quot;-&quot;,linewidth=2,color=&quot;green&quot;)
+
+ax.set_xlim(980,1000)
+ax.set_xlabel(r&#39;$\boldsymbol{t}$&#39;, fontsize=22, fontweight=&#39;bold&#39;)
+ax.set_ylabel(r&#39;$\boldsymbol{\epsilon_r}$&#39;, fontsize=22, fontweight=&#39;bold&#39;)
+ax.tick_params(direction=&quot;in&quot;,top=True,right=True,width=2)
+ax.legend(edgecolor=&quot;inherit&quot;,loc=&quot;best&quot;)
+for location in  [&quot;left&quot;, &quot;right&quot;, &quot;top&quot;, &quot;bottom&quot;]:
+    ax.spines[location].set_linewidth(2)
+
+fig.savefig(&quot;lorenz63_x1.eps&quot;,bbox_inches=&#39;tight&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+The PostScript backend does not support transparency; partially transparent artists will be rendered opaque.
+Failed to find a Ghostscript installation.  Distillation step skipped.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/Lorenz63_eqs_34_1.png" src="_images/Lorenz63_eqs_34_1.png" />
+</div>
+</div>
+<p>Or check the adaptive process of the order and error in the whole calculated time:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import numpy as np
+import mpmath
+def order_nosd_time(system):
+    magic_number = system.adptv_para.magic_number
+    gamma = system.adptv_para.gamma
+    remaining_T = system.adptv_para.remaining_T
+    lyap = system.lyap
+    tmax = system.tspan[1]
+    time = [i for i in range(0, tmax+1)]
+    delta_T = system.adptv_para.delta_T
+    order = np.zeros(len(time))
+    nosd = np.zeros(len(time))
+    desire_error = []
+    desire_time = []
+    for i in range(0, len(time)):
+        if i % delta_T == 0 and i &lt;= tmax - remaining_T:
+            nosd[i] = int(gamma*lyap*(tmax-i)/np.log(10.0))
+            desire_error.append(10**(-mpmath.mp.mpf(nosd[i])))
+            desire_time.append(i)
+        else:
+            nosd[i] = nosd[i-1]
+        order[i] = int(magic_number[0]*nosd[i]*nosd[i]+magic_number[1]*nosd[i]+magic_number[2])
+        order[-1] = order[-2]
+        nosd[-1] = nosd[-2]
+
+    return time, np.array(desire_time), order, nosd, np.array(desire_error)
+
+import matplotlib.pyplot as plt
+from matplotlib import rc
+rc(&quot;legend&quot;,fancybox=False)
+rc(&#39;text&#39;, usetex=True)
+rc(&#39;text.latex&#39;, preamble=r&#39;\usepackage{amsmath} \boldmath&#39;)
+rc(&#39;patch&#39;,linewidth=2)
+font = {&#39;family&#39; : &#39;serif&#39;,
+        &#39;serif&#39;:[&#39;Times&#39;],
+        &#39;weight&#39; : &#39;bold&#39;,
+        &#39;size&#39;   : 16}
+rc(&#39;font&#39;, **font)
+from matplotlib.ticker import FuncFormatter
+
+x = lorenz63.cnssol.t
+y1 = relative_error(lorenz63.cnssol.y, lorenz63_higher.cnssol.y)
+t_lorenz63, desire_time_lorenz63, order_lorenz63, nosd_lorenz63, desire_error_lorenz63 = order_nosd_time(lorenz63)
+def log_formatter(x, pos):
+    return &quot;$10^{{{:d}}}$&quot;.format(int(x))
+
+formatter = FuncFormatter(log_formatter)
+
+fig, ax1 = plt.subplots()
+ax2 = ax1.twinx()
+y11 = list(map(lambda x:sp.log(x, 10), y1))
+y22 = list(map(lambda desire_time_lorenz63:sp.log(desire_time_lorenz63, 10), desire_error_lorenz63))
+ax1.plot(x, y11,label=r&#39;$\boldsymbol{\epsilon_{r}}$&#39;,linestyle=&quot;-&quot;,linewidth=2,color=&#39;blue&#39;)
+ax1.plot(desire_time_lorenz63, y22,label=r&#39;$\boldsymbol{\epsilon_{e}}$&#39;,marker=&quot;o&quot;, markersize=10,color=&#39;none&#39;, markerfacecolor=&#39;none&#39;, markeredgecolor=&quot;black&quot;)
+ax2.plot(x[::10], order_lorenz63,label=&#39;order&#39;,linestyle=&quot;-&quot;,linewidth=2,color=&#39;red&#39;)
+ax2.tick_params(direction=&quot;in&quot;,axis=&#39;y&#39;, labelcolor=&#39;red&#39;,width=2)
+ax2.set_ylabel(r&#39;M&#39;, fontsize=22, color=&#39;red&#39;, fontweight=&#39;bold&#39;)
+ax1.yaxis.set_major_formatter(formatter)
+ax1.set_xlim(0,1000)
+ax1.set_xlabel(r&#39;$\boldsymbol{t}$&#39;, fontsize=22, fontweight=&#39;bold&#39;)
+ax1.set_ylabel(r&#39;$\boldsymbol{\epsilon_r}$, $\boldsymbol{\epsilon_e}$&#39;, fontsize=22, fontweight=&#39;bold&#39;)
+ax1.tick_params(direction=&quot;in&quot;,top=True,width=2)
+ax1.legend(edgecolor=&quot;inherit&quot;,loc=&quot;upper center&quot;)
+for location in  [&quot;left&quot;, &quot;right&quot;, &quot;top&quot;, &quot;bottom&quot;]:
+    ax1.spines[location].set_linewidth(2)
+
+fig.savefig(&quot;algorithm_lorenz63.eps&quot;,bbox_inches=&#39;tight&#39;)
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+The PostScript backend does not support transparency; partially transparent artists will be rendered opaque.
+Failed to find a Ghostscript installation.  Distillation step skipped.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/Lorenz63_eqs_36_1.png" src="_images/Lorenz63_eqs_36_1.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="theory.html" class="btn btn-neutral float-left" title="Theory" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="troubleshooting.html" class="btn btn-neutral float-right" title="Trouble shooting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (C) 2023 Shanghai Jiao Tong University and Authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

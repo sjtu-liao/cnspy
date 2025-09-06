@@ -1,0 +1,12 @@
+Host proxy_host
+  HostName xxxxxxxx
+  User xxxxxxxx
+  Password *********
+  Port xxxxxx
+
+
+Host target_host
+  HostName xxx.xxx.xxx.xxx
+  User xxxxxxxx
+  Password *********
+  Port xx

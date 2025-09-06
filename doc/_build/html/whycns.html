@@ -1,0 +1,195 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why CNS? &mdash; cnspy 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Theory" href="theory.html" />
+    <link rel="prev" title="Getting Started" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            cnspy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Why CNS?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#works-using-cns">Works using CNS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#classical-lorenz-69-system">Classical Lorenz 69 system</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#three-body-problem">Three-body problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spatiotemporal-chaos">Spatiotemporal chaos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#turbulence">Turbulence</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Lorenz63_eqs.html">Example: Lorenz63 Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Trouble shooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Utilities.html">Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cnspy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Why CNS?</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/whycns.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="why-cns">
+<h1>Why CNS?<a class="headerlink" href="#why-cns" title="Link to this heading"></a></h1>
+<p>A chaotic dynamical system has a popular property called sensitive dependence on initial conditions (SDIC), which means that the system is very sensitive to the initial conditions. It not only has the sensitivity dependence on initial conditions (SDIC) but also possesses the sensitivity dependence on numerical algorithms (SDNA), as reported by Lorenz <span id="id1">[<a class="reference internal" href="#id9" title="Edward N Lorenz. Computational chaos-a prelude to computational instability. Physica D: Nonlinear Phenomena, 35(3):299–317, 1989.">W1</a>]</span>. Thus, for a chaotic dynamical system, calculated trajectories of computer simulations are very sensitive to the initial conditions and numerical algorithms. This is the reason why we need to develop a new numerical algorithm for chaotic dynamical systems.</p>
+<p>The results of chaotic dynamical systems given by the CNS can be regarded as a “clean” benchmark solution, which is the main purpose of proposing
+this CNS strategy. By contrast, solely adopting the Taylor series method <span id="id2">[<a class="reference internal" href="#id10" title="George Corliss and YF Chang. Solving ordinary differential equations using taylor series. ACM Transactions on Mathematical Software (TOMS), 8(2):114–144, 1982.">W2</a>]</span> to solve a chaotic system for high precision, one usually does not focus on the “critical predictable time” Tc and thus obtain a mixture of the “true” physical solution and the “false” numerical noise, which are mostly at the same order of magnitude, since the background numerical noise of a simulation of chaos should increase exponentially (and quickly) until to the same level of “true” physical solution, which is not considered by traditional numerical strategies.</p>
+<section id="works-using-cns">
+<h2>Works using CNS<a class="headerlink" href="#works-using-cns" title="Link to this heading"></a></h2>
+<p>The CNS has already been used in varies chaotic dynamcial systems.</p>
+<section id="classical-lorenz-69-system">
+<h3>Classical Lorenz 69 system<a class="headerlink" href="#classical-lorenz-69-system" title="Link to this heading"></a></h3>
+<p>A reproducible and convergent numerical solution of the Lorenz system is obtained within <span class="math notranslate nohighlight">\(t \in [0,10000]\)</span> by Liao and Wang <span id="id3">[<a class="reference internal" href="#id11" title="ShiJun Liao and PengFei Wang. On the mathematically reliable long-term simulation of chaotic solutions of lorenz equation in the interval [0, 10000]. Science China Physics, Mechanics and Astronomy, 57:330–335, 2014.">W3</a>]</span>.</p>
+</section>
+<section id="three-body-problem">
+<h3>Three-body problem<a class="headerlink" href="#three-body-problem" title="Link to this heading"></a></h3>
+<p>Significantly, the CNS strategy was applied to investigate the periodic orbits of the famous three-body problem, and more than 2000 brand-new families of periodic orbits were discovered successfully by Li et al <span id="id4">[<a class="reference internal" href="#id12" title="XiaoMing Li and ShiJun Liao. More than six hundred new families of newtonian periodic planar collisionless three-body orbits. Science China Physics, Mechanics &amp; Astronomy, 60:1–7, 2017.">W4</a>, <a class="reference internal" href="#id13" title="Xiaoming Li, Yipeng Jing, and Shijun Liao. Over a thousand new periodic orbits of a planar three-body system with unequal masses. Publications of the Astronomical Society of Japan, 70(4):64, 2018.">W5</a>, <a class="reference internal" href="#id14" title="Xiaoming Li and Shijun Liao. Collisionless periodic orbits in the free-fall three-body problem. New Astronomy, 70:22–26, 2019.">W6</a>]</span>. (For more gifs and pictures please refer to <a class="reference external" href="https://numericaltank.sjtu.edu.cn/three-body/three-body.htm">Periodic orbits for Newtonian planar three-body problem</a>)</p>
+</section>
+<section id="spatiotemporal-chaos">
+<h3>Spatiotemporal chaos<a class="headerlink" href="#spatiotemporal-chaos" title="Link to this heading"></a></h3>
+<p>As for spatiotemporal chaos,  Hu &amp; Liao <span id="id5">[<a class="reference internal" href="#id15" title="Tianli Hu and Shijun Liao. On the risks of using double precision in numerical simulations of spatio-temporal chaos. Journal of Computational Physics, 418:109629, 2020.">W7</a>]</span> and Qin &amp; Liao <span id="id6">[<a class="reference internal" href="#id16" title="Shijie Qin and Shijun Liao. Influence of numerical noises on computer-generated simulation of spatio-temporal chaos. Chaos, Solitons &amp; Fractals, 136:109790, 2020.">W8</a>]</span> proposed an efficient CNS strategy utilized in physical space to numerically solve the 1D complex Ginzburg-Landau equation (CGLE) and the damped driven sine-Gordon equation (SGE), respectively.</p>
+</section>
+<section id="turbulence">
+<h3>Turbulence<a class="headerlink" href="#turbulence" title="Link to this heading"></a></h3>
+<p>Qin &amp; Liao <span id="id7">[<a class="reference internal" href="#id17" title="Shijie Qin and Shijun Liao. Large-scale influence of numerical noises as artificial stochastic disturbances on a sustained turbulence. Journal of Fluid Mechanics, 948:A7, 2022.">W9</a>]</span> provide rigorous evidence that numerical noises as a kind of tiny artificial stochastic disturbances have quantitatively and qualitatively large-scale influences on a sustained turbulence.</p>
+<video width="640" height="360" controls>
+   <source src="https://raw.githubusercontent.com/sjtu-liao/RBC/main/RBC-mv.mp4" type="video/mp4">
+</video></section>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
+<div class="docutils container" id="id8">
+<div role="list" class="citation-list">
+<div class="citation" id="id9" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">W1</a><span class="fn-bracket">]</span></span>
+<p>Edward N Lorenz. Computational chaos-a prelude to computational instability. <em>Physica D: Nonlinear Phenomena</em>, 35(3):299–317, 1989.</p>
+</div>
+<div class="citation" id="id10" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">W2</a><span class="fn-bracket">]</span></span>
+<p>George Corliss and YF Chang. Solving ordinary differential equations using taylor series. <em>ACM Transactions on Mathematical Software (TOMS)</em>, 8(2):114–144, 1982.</p>
+</div>
+<div class="citation" id="id11" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">W3</a><span class="fn-bracket">]</span></span>
+<p>ShiJun Liao and PengFei Wang. On the mathematically reliable long-term simulation of chaotic solutions of lorenz equation in the interval [0, 10000]. <em>Science China Physics, Mechanics and Astronomy</em>, 57:330–335, 2014.</p>
+</div>
+<div class="citation" id="id12" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">W4</a><span class="fn-bracket">]</span></span>
+<p>XiaoMing Li and ShiJun Liao. More than six hundred new families of newtonian periodic planar collisionless three-body orbits. <em>Science China Physics, Mechanics &amp; Astronomy</em>, 60:1–7, 2017.</p>
+</div>
+<div class="citation" id="id13" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">W5</a><span class="fn-bracket">]</span></span>
+<p>Xiaoming Li, Yipeng Jing, and Shijun Liao. Over a thousand new periodic orbits of a planar three-body system with unequal masses. <em>Publications of the Astronomical Society of Japan</em>, 70(4):64, 2018.</p>
+</div>
+<div class="citation" id="id14" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">W6</a><span class="fn-bracket">]</span></span>
+<p>Xiaoming Li and Shijun Liao. Collisionless periodic orbits in the free-fall three-body problem. <em>New Astronomy</em>, 70:22–26, 2019.</p>
+</div>
+<div class="citation" id="id15" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">W7</a><span class="fn-bracket">]</span></span>
+<p>Tianli Hu and Shijun Liao. On the risks of using double precision in numerical simulations of spatio-temporal chaos. <em>Journal of Computational Physics</em>, 418:109629, 2020.</p>
+</div>
+<div class="citation" id="id16" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">W8</a><span class="fn-bracket">]</span></span>
+<p>Shijie Qin and Shijun Liao. Influence of numerical noises on computer-generated simulation of spatio-temporal chaos. <em>Chaos, Solitons &amp; Fractals</em>, 136:109790, 2020.</p>
+</div>
+<div class="citation" id="id17" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">W9</a><span class="fn-bracket">]</span></span>
+<p>Shijie Qin and Shijun Liao. Large-scale influence of numerical noises as artificial stochastic disturbances on a sustained turbulence. <em>Journal of Fluid Mechanics</em>, 948:A7, 2022.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install.html" class="btn btn-neutral float-left" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="theory.html" class="btn btn-neutral float-right" title="Theory" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (C) 2023 Shanghai Jiao Tong University and Authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

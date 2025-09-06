@@ -1,0 +1,428 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Theory &mdash; cnspy 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Example: Lorenz63 Equations" href="Lorenz63_eqs.html" />
+    <link rel="prev" title="Why CNS?" href="whycns.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            cnspy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="whycns.html">Why CNS?</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Theory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-ideas-of-the-cns">Basic ideas of the CNS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-old-way">The old way</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#a-new-way">A new way</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#addition-and-subtraction">Addition and subtraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multiplication">Multiplication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#division">Division</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#logarithm">Logarithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exponential">Exponential</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sine-and-cosine">Sine and cosine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hyperbolic-sine-and-hyperbolic-cosine">Hyperbolic sine and hyperbolic cosine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tangent">Tangent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hyperbolic-tangent">Hyperbolic tangent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cotangent">Cotangent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hyperbolic-cotangent">Hyperbolic cotangent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inverse-sine">Inverse sine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inverse-hyperbolic-sine">Inverse hyperbolic sine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inverse-cosine">Inverse cosine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inverse-hyperbolic-cosine">Inverse hyperbolic cosine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inverse-tangent">Inverse tangent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inverse-hyperbolic-tangent">Inverse hyperbolic tangent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inverse-cotangent">Inverse cotangent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inverse-hyperbolic-cotangent">Inverse hyperbolic cotangent</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#self-adaptive-algorithm">Self-Adaptive Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Lorenz63_eqs.html">Example: Lorenz63 Equations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Trouble shooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Utilities.html">Utilities</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cnspy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Theory</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/theory.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="theory">
+<h1>Theory<a class="headerlink" href="#theory" title="Link to this heading"></a></h1>
+<section id="basic-ideas-of-the-cns">
+<h2>Basic ideas of the CNS<a class="headerlink" href="#basic-ideas-of-the-cns" title="Link to this heading"></a></h2>
+<p>Clean Numerical Simulation (CNS) <span id="id1">[<a class="reference internal" href="#id6" title="Shijun Liao. On the reliability of computed chaotic solutions of non-linear differential equations. Tellus A: Dynamic Meteorology and Oceanography, 61(4):550–564, 2008.">T1</a>]</span> is a set of strategies with a purpose to control “numerical noises” arbitrarily. Its main point is decreasing the truncation error and the round-off error to a required level.</p>
+<p>Truncation errors come from the discretization of continuous systems. Numerical methods have the following general form:</p>
+<div class="math notranslate nohighlight">
+\[f(t+h) = f(t) + h \cdot RHS(t)\]</div>
+<p>where <span class="math notranslate nohighlight">\(RHS(t)\)</span> is the right-hand side, it varies according to the numerical methods. For the N-th order Taylor series method, the right-hand side can written as:</p>
+<div class="math notranslate nohighlight">
+\[RHS(t) = \sum\limits_{i=1}^{N}\dfrac{f^{(i)}(t)}{i!}h^{i-1} + \mathcal{O}(h^{N})\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathcal{O}(h^{N})\)</span> is the order of the global truncation errors.</p>
+<p>The CNS suggests that reducing the timestep <span class="math notranslate nohighlight">\(h\)</span> or increasing <span class="math notranslate nohighlight">\(N\)</span> with high order methods can decrease truncation errors to a small level which will not damage the long-term prediction. With the help of extended precision formats to store extra digits in computers, round-off errors can be largely avoided. Consequently, the numerical noises of any simulation can be controlled arbitrarily small.</p>
+<p>Based on the ability to control numerical noises arbitrarily small, the CNS can be used to estimate the critical predictable time <span class="math notranslate nohighlight">\(T_c\)</span> of a chaotic system. The critical predictable time <span class="math notranslate nohighlight">\(T_c\)</span> is defined as the time when the averaged level of numerical noise reaches a certain level <span class="math notranslate nohighlight">\(\epsilon_c\)</span>.</p>
+<p>The averaged level of numerical noise should increase exponentially within a temporal interval [0, <span class="math notranslate nohighlight">\(T_c\)</span>], i.e.</p>
+<div class="math notranslate nohighlight">
+\[\varepsilon(t) = \varepsilon_0 \exp(\kappa t), \quad 0 \leq t \leq T_c\]</div>
+<p>So the critical predictable time <span class="math notranslate nohighlight">\(T_c\)</span> can be estimated by:</p>
+<div class="math notranslate nohighlight">
+\[T_c = \dfrac{1}{k}\ln(\dfrac{\varepsilon_c}{\varepsilon_0})\]</div>
+<p>For more information, please refer to Liao’s review article <span id="id2">[<a class="reference internal" href="#id7" title="Shi-jun Liao. On the clean numerical simulation (cns) of chaotic dynamic systems. Journal of Hydrodynamics, Ser. B, 29(5):729–747, 2017.">T2</a>]</span>.</p>
+</section>
+<section id="the-old-way">
+<h2>The old way<a class="headerlink" href="#the-old-way" title="Link to this heading"></a></h2>
+<p>In the past studies, using CNS to solve the ordinary differential equations (ODEs) is to differentiate both sides of the equations to get the recursion formulas of the variables. For example, for the Lorenz equations:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\dot{x}(t) &amp; = \sigma (y(t) - x(t))\\\dot{y}(t) &amp; = R x(t) - y(t) -x(t)z(t)\\\dot{z}(t) &amp; = x(t)y(t) - b z(t)\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma, R, b\)</span> are physical parameters,  the dot denotes the differentiation with respect to the time <span class="math notranslate nohighlight">\(t\)</span>, respectively.</p>
+<p>Then, differentiating both sides of the Lorenz eqs  <span class="math notranslate nohighlight">\((N-1)\)</span> times with respect to <span class="math notranslate nohighlight">\(t\)</span> and then dividing them by <span class="math notranslate nohighlight">\(n!\)</span>, we obtain the high-order temporal derivatives:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}x^{[n+1]} &amp; = \dfrac{\sigma}{n+1}(y^{[n]}-x^{[n]})\\y^{[n+1]} &amp; = \dfrac{1}{n+1}(Rx^{[n]}-y^{[n]}-\sum\limits_{j=0}^{n}x^{[j]}z^{[n-j]})\\z^{[n+1]} &amp; = \dfrac{1}{n+1}(bz^{[n]}+\sum\limits_{j=0}^{n}x^{[j]}y^{[n-j]})\end{aligned}\end{align} \]</div>
+<p>where <span class="math notranslate nohighlight">\(x^{[n]}, y^{[n]}, z^{[n]}\)</span> are the coefficients of the Taylor series:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}x^{[n]} &amp; = \dfrac{1}{n!}\dfrac{\partial^n x(t)}{\partial t^n}\\y^{[n]} &amp; = \dfrac{1}{n!}\dfrac{\partial^n y(t)}{\partial t^n}\\z^{[n]} &amp; = \dfrac{1}{n!}\dfrac{\partial^n z(t)}{\partial t^n}\end{aligned}\end{align} \]</div>
+<p>To achieve iterative solutions for simple equations, manual methods may suffice. However, for more complex equations, manually solving the iterative process can be tedious. In such cases, it becomes necessary to adopt automated methods for derivative finding.</p>
+</section>
+<section id="a-new-way">
+<h2>A new way<a class="headerlink" href="#a-new-way" title="Link to this heading"></a></h2>
+<p>Automatic Differentiation (AD) is a set of techniques to evaluate the derivate of a function specified by a computer program. In the method of Taylor series method (TSM), it defines basic arithmetic of Taylor series, and use these basic arithmetic of Taylor series, one can automatical get the arbitrary derivative of the function.</p>
+<p>The basic arithmetic of Taylor series are derivated by Leibniz rule:</p>
+<p>for the <span class="math notranslate nohighlight">\(a(t) = b(t)c(t)\)</span>, it gives the following formula:</p>
+<div class="math notranslate nohighlight">
+\[a^{[n]}(t) = \sum\limits_{j=0}^{n}b^{[j]}(t)c^{[n-j]}(t)\]</div>
+<p>where  <span class="math notranslate nohighlight">\(a^{[n]}, b^{[n]}, c^{[n]}\)</span> are the coefficients of the Taylor series defined in the last section.</p>
+<p>Besides, the derivative of the <span class="math notranslate nohighlight">\(a(t), b(t), c(t)\)</span> can be write as:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{'}(t) = \sum\limits_{j=0}^{n-1}(j+1)a^{[j+1]}\Delta t^{j}\\b^{'}(t) = \sum\limits_{j=0}^{n-1}(j+1)b^{[j+1]}\Delta t^{j}\\c^{'}(t) = \sum\limits_{j=0}^{n-1}(j+1)c^{[j+1]}\Delta t^{j}\end{aligned}\end{align} \]</div>
+<p>Based on those fomulas, we can obtain the different basic functions of the taylor series.</p>
+<section id="addition-and-subtraction">
+<h3>Addition and subtraction<a class="headerlink" href="#addition-and-subtraction" title="Link to this heading"></a></h3>
+<p>For the <span class="math notranslate nohighlight">\(a(t) = b(t) \pm c(t)\)</span>, we have the iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[a^{[n]}(t) = b^{[n]}(t) \pm c^{[n]}(t)\]</div>
+</section>
+<section id="multiplication">
+<h3>Multiplication<a class="headerlink" href="#multiplication" title="Link to this heading"></a></h3>
+<p>For the <span class="math notranslate nohighlight">\(a(t) = b(t)c(t)\)</span>, we have the iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[a^{[n]}(t) = \sum\limits_{j=0}^{n}b^{[j]}(t)c^{[n-j]}(t)\]</div>
+</section>
+<section id="division">
+<h3>Division<a class="headerlink" href="#division" title="Link to this heading"></a></h3>
+<p>For the <span class="math notranslate nohighlight">\(a(t) = b(t)/c(t)\)</span>, which constantly equals <span class="math notranslate nohighlight">\(a(t)c(t) = b(t)\)</span>, we have the iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[a^{[n]}(t)=\frac{1}{c^{[0]}(t)}\left[b^{[n]}(t)-\sum_{j=1}^n a^{[j]}(t) c^{[n-j]}(t)\right]\]</div>
+</section>
+<section id="logarithm">
+<h3>Logarithm<a class="headerlink" href="#logarithm" title="Link to this heading"></a></h3>
+<p>For the <span class="math notranslate nohighlight">\(a(t) = \ln{b(t)}\)</span>, we have the iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[a^{[n]}(t)=\frac{1}{n b^{[0]}(t)}\left[n b^{[n]}(t)-\sum_{j=1}^{n-1} j  a^{[j]}(t) b^{[n-j]}(t) \right]\]</div>
+<p>For the <span class="math notranslate nohighlight">\(a(t) = \log_{c} b(t)\)</span>, we can use the logarithm change of base rule <span class="math notranslate nohighlight">\(\log_{c} b(t) = \dfrac{\ln b(t)}{\ln c}\)</span>, which gives:</p>
+<div class="math notranslate nohighlight">
+\[a^{[n]}(t)=\frac{1}{nb^{[0]}(t)\ln c }\left[n b^{[n]}(t)-\sum_{j=1}^{n-1} j   a^{[j]}(t) b^{[n-j]}(t) \right]\]</div>
+</section>
+<section id="exponential">
+<h3>Exponential<a class="headerlink" href="#exponential" title="Link to this heading"></a></h3>
+<p>For the <span class="math notranslate nohighlight">\(a(t) = e^{b(t)}\)</span>, we have the iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[a^{[n]}(t)=\frac{1}{n} \sum_{j=0}^{n-1} (n-j) a^{[j]}(t) b^{[n-j]}(t)\]</div>
+<p>For the <span class="math notranslate nohighlight">\(a(t) = c^{b(t)}\)</span>, we can use <span class="math notranslate nohighlight">\(c^{b(t)} = e^{b(t)\ln{c}}\)</span>, which gives:</p>
+<div class="math notranslate nohighlight">
+\[a^{[n]}(t)=\frac{\ln{c}}{n} \sum_{j=0}^{n-1} (n-j) a^{[j]}(t) b^{[n-j]}(t)\]</div>
+</section>
+<section id="sine-and-cosine">
+<h3>Sine and cosine<a class="headerlink" href="#sine-and-cosine" title="Link to this heading"></a></h3>
+<p>For the <span class="math notranslate nohighlight">\(a_s(t) = \sin(b(t))\)</span> and the <span class="math notranslate nohighlight">\(a_c(t) = \cos(b(t))\)</span> we have the iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a_s^{[n]}(t) &amp; = \dfrac{1}{n}\sum_{j=0}^{n-1}(n-j)a_c^{[j]}(t)b^{[n-j]}(t)\\a_c^{[n]}(t) &amp; = -\dfrac{1}{n}\sum_{j=0}^{n-1}(n-j)a_s^{[j]}(t)b^{[n-j]}(t)\end{aligned}\end{align} \]</div>
+</section>
+<section id="hyperbolic-sine-and-hyperbolic-cosine">
+<h3>Hyperbolic sine and hyperbolic cosine<a class="headerlink" href="#hyperbolic-sine-and-hyperbolic-cosine" title="Link to this heading"></a></h3>
+<p>For the <span class="math notranslate nohighlight">\(a_{sh}(t) = \sinh(b(t))\)</span> and the <span class="math notranslate nohighlight">\(a_{ch}(t) = \cosh(b(t))\)</span> we have the iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a_{sh}^{[n]}(t) &amp; = \dfrac{1}{n}\sum_{j=0}^{n-1}(n-j)a_{ch}^{[j]}(t)b^{[n-j]}(t)\\a_{ch}^{[n]}(t) &amp; = \dfrac{1}{n}\sum_{j=0}^{n-1}(n-j)a_{sh}^{[j]}(t)b^{[n-j]}(t)\end{aligned}\end{align} \]</div>
+</section>
+<section id="tangent">
+<h3>Tangent<a class="headerlink" href="#tangent" title="Link to this heading"></a></h3>
+<p>For <span class="math notranslate nohighlight">\(a(t) = \tan (b(t))\)</span>, let:</p>
+<div class="math notranslate nohighlight">
+\[h(b(t)) = \dfrac{1}{\cos^{2}(b(t))}\]</div>
+<p>we have:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{'}(t) &amp; = \tan^{'} (b(t)) b^{'}(t)\\&amp; = h(b(t)) b^{'}(t)\\h^{'}(b(t)) &amp; = \left( \dfrac{1}{\cos^{2}(b(t))} \right)^{'}\\&amp; = \dfrac{2\sin(b(t))b^{'}(t)}{\cos^{3}(b(t))}\\&amp; = 2 a(t) h(b(t)) b^{'}(t)\\&amp; = 2 a(t) a^{'}(t)\end{aligned}\end{align} \]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <cite>‘</cite> of a quantity denote the derivative of the this quantity about the quantity in its parentheses. For example, <span class="math notranslate nohighlight">\(a^{'}(t)\)</span> means <span class="math notranslate nohighlight">\(\dfrac{\partial a(t)}{\partial t}\)</span> and <span class="math notranslate nohighlight">\(\tan^{'}(b(t))\)</span> means <span class="math notranslate nohighlight">\(\dfrac{\partial tan(b(t))}{\partial b(t)}\)</span>.</p>
+</div>
+<p>with the multiplication of taylor series, we have the final iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{[n]}(t) &amp; = \dfrac{1}{n} \sum\limits_{j=0}^{n-1}(n-j)h^{[j]}(t)b^{[n-j]}(t)\\h^{[n]}(t) &amp; = \dfrac{2}{n} \sum\limits_{j=0}^{n-1}(n-j)a^{[j]}(t)a^{[n-j]}(t)\end{aligned}\end{align} \]</div>
+</section>
+<section id="hyperbolic-tangent">
+<h3>Hyperbolic tangent<a class="headerlink" href="#hyperbolic-tangent" title="Link to this heading"></a></h3>
+<p>For <span class="math notranslate nohighlight">\(a(t) = \tanh (b(t))\)</span>, let:</p>
+<div class="math notranslate nohighlight">
+\[h(b(t)) = \dfrac{1}{\cosh^{2}(b(t))}\]</div>
+<p>we have:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{'}(t) &amp; = \tanh^{'} (b(t)) b^{'}(t)\\&amp; = h(b(t)) b^{'}(t)\\h^{'}(b(t)) &amp; = \left( \dfrac{1}{\cosh^{2}(b(t))} \right)^{'}\\&amp; = -\dfrac{2\sinh(b(t))b^{'}(t)}{\cosh^{3}(b(t))}\\&amp; = -2 a(t) h(b(t)) b^{'}(t)\\&amp; = -2 a(t) a^{'}(t)\end{aligned}\end{align} \]</div>
+<p>with the multiplication of taylor series, we have the final iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{[n]}(t) &amp; = \dfrac{1}{n} \sum\limits_{j=0}^{n-1}(n-j)h^{[j]}(t)b^{[n-j]}(t)\\h^{[n]}(t) &amp; = -\dfrac{2}{n} \sum\limits_{j=0}^{n-1}(n-j)a^{[j]}(t)a^{[n-j]}(t)\end{aligned}\end{align} \]</div>
+</section>
+<section id="cotangent">
+<h3>Cotangent<a class="headerlink" href="#cotangent" title="Link to this heading"></a></h3>
+<p>For <span class="math notranslate nohighlight">\(a(t) = \cot (b(t))\)</span>, let:</p>
+<div class="math notranslate nohighlight">
+\[h(b(t)) = -\dfrac{1}{\sin^{2}(b(t))}\]</div>
+<p>we have:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{'}(t) &amp; = \cot^{'} (b(t)) b^{'}(t)\\&amp; = h(b(t)) b^{'}(t)\\h^{'}(b(t)) &amp; = \left( -\dfrac{1}{\sin^{2}(b(t))} \right)^{'}\\&amp; = \dfrac{2\cos(b(t))b^{'}(t)}{\sin^{3}(b(t))}\\&amp; = -2 a(t) h(b(t)) b^{'}(t)\\&amp; = -2 a(t) a^{'}(t)\end{aligned}\end{align} \]</div>
+<p>with the multiplication of taylor series, we have the final iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{[n]}(t) &amp; = \dfrac{1}{n} \sum\limits_{j=0}^{n-1}(n-j)h^{[j]}(t)b^{[n-j]}(t)\\h^{[n]}(t) &amp; = -\dfrac{2}{n} \sum\limits_{j=0}^{n-1}(n-j)a^{[j]}(t)a^{[n-j]}(t)\end{aligned}\end{align} \]</div>
+</section>
+<section id="hyperbolic-cotangent">
+<h3>Hyperbolic cotangent<a class="headerlink" href="#hyperbolic-cotangent" title="Link to this heading"></a></h3>
+<p>For <span class="math notranslate nohighlight">\(a(t) = \coth (b(t))\)</span>, let:</p>
+<div class="math notranslate nohighlight">
+\[h(b(t)) = -\dfrac{1}{\sinh^{2}(b(t))}\]</div>
+<p>we have:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{'}(t) &amp; = \cot^{'} (b(t)) b^{'}(t)\\&amp; = h(b(t)) b^{'}(t)\\h^{'}(b(t)) &amp; = \left( \dfrac{1}{\sinh^{2}(b(t))} \right)^{'}\\&amp; = \dfrac{2\cosh(b(t))b^{'}(t)}{\sinh^{3}(b(t))}\\&amp; = -2 a(t) h(b(t)) b^{'}(t)\\&amp; = -2 a(t) a^{'}(t)\end{aligned}\end{align} \]</div>
+<p>with the multiplication of taylor series, we have the final iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{[n]}(t) &amp; = \dfrac{1}{n} \sum\limits_{j=0}^{n-1}(n-j)h^{[j]}(t)b^{[n-j]}(t)\\h^{[n]}(t) &amp; = -\dfrac{2}{n} \sum\limits_{j=0}^{n-1}(n-j)a^{[j]}(t)a^{[n-j]}(t)\end{aligned}\end{align} \]</div>
+</section>
+<section id="inverse-sine">
+<h3>Inverse sine<a class="headerlink" href="#inverse-sine" title="Link to this heading"></a></h3>
+<p>For <span class="math notranslate nohighlight">\(a(t) = \arcsin (b(t))\)</span>, let:</p>
+<div class="math notranslate nohighlight">
+\[h(b(t)) = \sqrt{1-b^2(t)}\]</div>
+<p>we have:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{'}(t) &amp; = \arcsin^{'} (b(t)) b^{'}(t)\\&amp; = \dfrac{b^{'}(t)}{h(b(t))}\\h^{'}(b(t)) &amp; = \left( \sqrt{1-b^2(t)} \right)^{'}\\&amp; = -\dfrac{b^{'}(t)b(t)}{\sqrt{1-b^2(t)}}\\&amp; = -a^{'}(t)b(t)\end{aligned}\end{align} \]</div>
+<p>with the multiplication and division of taylor series, we have the final iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{[n]}(t) &amp; = \frac{1}{nh^{[0]}(t)}\left[nb^{[n]}(t)-\sum_{j=1}^{n-1}j a^{[j]}(t) h^{[n-j]}(t)\right]\\h^{[n]}(t) &amp; = -\dfrac{1}{n} \sum\limits_{j=0}^{n-1}(n-j)a^{[n-j]}(t)b^{[j]}(t)\end{aligned}\end{align} \]</div>
+</section>
+<section id="inverse-hyperbolic-sine">
+<h3>Inverse hyperbolic sine<a class="headerlink" href="#inverse-hyperbolic-sine" title="Link to this heading"></a></h3>
+<p>For <span class="math notranslate nohighlight">\(a(t) = \operatorname{arcsinh} (b(t))\)</span>, let:</p>
+<div class="math notranslate nohighlight">
+\[h(b(t)) = \sqrt{1+b^2(t)}\]</div>
+<p>we have:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{'}(t) &amp; = \operatorname{arcsinh}^{'} (b(t)) b^{'}(t)\\&amp; = \dfrac{b^{'}(t)}{h(b(t))}\\h^{'}(b(t)) &amp; = \left( \sqrt{1+b^2(t)} \right)^{'}\\&amp; = \dfrac{b^{'}(t)b(t)}{\sqrt{1+b^2(t)}}\\&amp; = a^{'}(t)b(t)\end{aligned}\end{align} \]</div>
+<p>with the multiplication and division of taylor series, we have the final iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{[n]}(t) &amp; = \frac{1}{nh^{[0]}(t)}\left[nb^{[n]}(t)-\sum_{j=1}^{n-1}j a^{[j]}(t) h^{[n-j]}(t)\right]\\h^{[n]}(t) &amp; = \dfrac{1}{n} \sum\limits_{j=0}^{n-1}(n-j)a^{[n-j]}(t)b^{[j]}(t)\end{aligned}\end{align} \]</div>
+</section>
+<section id="inverse-cosine">
+<h3>Inverse cosine<a class="headerlink" href="#inverse-cosine" title="Link to this heading"></a></h3>
+<p>For <span class="math notranslate nohighlight">\(a(t) = \arccos (b(t))\)</span>, let:</p>
+<div class="math notranslate nohighlight">
+\[h(b(t)) = -\sqrt{1-b^2(t)}\]</div>
+<p>we have:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{'}(t) &amp; = \arccos^{'} (b(t)) b^{'}(t)\\&amp; = \dfrac{b^{'}(t)}{h(b(t))}\\h^{'}(b(t)) &amp; = \left( -\sqrt{1-b^2(t)} \right)^{'}\\&amp; = \dfrac{b^{'}(t)b(t)}{\sqrt{1-b^2(t)}}\\&amp; = -a^{'}(t)b(t)\end{aligned}\end{align} \]</div>
+<p>with the multiplication and division of taylor series, we have the final iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{[n]}(t) &amp; = \frac{1}{nh^{[0]}(t)}\left[nb^{[n]}(t)-\sum_{j=1}^{n-1}j a^{[j]}(t) h^{[n-j]}(t)\right]\\h^{[n]}(t) &amp; = -\dfrac{1}{n} \sum\limits_{j=0}^{n-1}(n-j)a^{[n-j]}(t)b^{[j]}(t)\end{aligned}\end{align} \]</div>
+</section>
+<section id="inverse-hyperbolic-cosine">
+<h3>Inverse hyperbolic cosine<a class="headerlink" href="#inverse-hyperbolic-cosine" title="Link to this heading"></a></h3>
+<p>For <span class="math notranslate nohighlight">\(a(t) = \operatorname{arccosh} (b(t))\)</span>, let:</p>
+<div class="math notranslate nohighlight">
+\[h(b(t)) = \sqrt{b^2(t)-1}\]</div>
+<p>we have:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{'}(t) &amp; = \operatorname{arccosh}^{'} (b(t)) b^{'}(t)\\&amp; = \dfrac{b^{'}(t)}{h(b(t))}\\h^{'}(b(t)) &amp; = \left( \sqrt{b^2(t)-1} \right)^{'}\\&amp; = \dfrac{b^{'}(t)b(t)}{\sqrt{1-b^2(t)}}\\&amp; = a^{'}(t)b(t)\end{aligned}\end{align} \]</div>
+<p>with the multiplication and division of taylor series, we have the final iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{[n]}(t) &amp; = \frac{1}{nh^{[0]}(t)}\left[nb^{[n]}(t)-\sum_{j=1}^{n-1}j a^{[j]}(t) h^{[n-j]}(t)\right]\\h^{[n]}(t) &amp; = \dfrac{1}{n} \sum\limits_{j=0}^{n-1}(n-j)a^{[n-j]}(t)b^{[j]}(t)\end{aligned}\end{align} \]</div>
+</section>
+<section id="inverse-tangent">
+<h3>Inverse tangent<a class="headerlink" href="#inverse-tangent" title="Link to this heading"></a></h3>
+<p>For <span class="math notranslate nohighlight">\(a(t) = \arctan (b(t))\)</span>, let:</p>
+<div class="math notranslate nohighlight">
+\[h(b(t)) = b^2(t)\]</div>
+<p>we have:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{'}(t) &amp; = \arctan^{'} (b(t)) b^{'}(t)\\&amp; = \dfrac{b^{'}(t)}{h(b(t))+1}\\h^{'}(b(t)) &amp; = \left( b^2(t) \right)^{'}\\&amp; = 2b(t)b^{'}(t)\end{aligned}\end{align} \]</div>
+<p>with the multiplication and division of taylor series, we have the final iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{[n]}(t) &amp; = \frac{1}{n(1+h^{[0]}(t))}\left[nb^{[n]}(t)-\sum_{j=1}^{n-1}j a^{[j]}(t) h^{[n-j]}(t)\right]\\h^{[n]}(t) &amp; = \dfrac{2}{n} \sum\limits_{j=0}^{n-1}(n-j)b^{[j]}(t)b^{[n-j]}(t)\end{aligned}\end{align} \]</div>
+</section>
+<section id="inverse-hyperbolic-tangent">
+<h3>Inverse hyperbolic tangent<a class="headerlink" href="#inverse-hyperbolic-tangent" title="Link to this heading"></a></h3>
+<p>For <span class="math notranslate nohighlight">\(a(t) = \operatorname{arctanh} (b(t))\)</span>, let:</p>
+<div class="math notranslate nohighlight">
+\[h(b(t)) = -b^2(t)\]</div>
+<p>we have:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{'}(t) &amp; = \operatorname{arctanh}^{'} (b(t)) b^{'}(t)\\&amp; = \dfrac{b^{'}(t)}{h(b(t))+1}\\h^{'}(b(t)) &amp; = \left( -b^2(t) \right)^{'}\\&amp; = -2b(t)b^{'}(t)\end{aligned}\end{align} \]</div>
+<p>with the multiplication and division of taylor series, we have the final iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{[n]}(t) &amp; = \frac{1}{n(1+h^{[0]}(t))}\left[nb^{[n]}(t)-\sum_{j=1}^{n-1}j a^{[j]}(t) h^{[n-j]}(t)\right]\\h^{[n]}(t) &amp; = -\dfrac{2}{n} \sum\limits_{j=0}^{n-1}(n-j)b^{[j]}(t)b^{[n-j]}(t)\end{aligned}\end{align} \]</div>
+</section>
+<section id="inverse-cotangent">
+<h3>Inverse cotangent<a class="headerlink" href="#inverse-cotangent" title="Link to this heading"></a></h3>
+<p>For <span class="math notranslate nohighlight">\(a(t) = \operatorname{arccot} (b(t))\)</span>, let:</p>
+<div class="math notranslate nohighlight">
+\[h(b(t)) = -b^2(t)\]</div>
+<p>we have:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{'}(t) &amp; = \operatorname{arccot}^{'} (b(t)) b^{'}(t)\\&amp; = \dfrac{b^{'}(t)}{h(b(t))-1}\\h^{'}(b(t)) &amp; = \left( -b^2(t) \right)^{'}\\&amp; = -2b(t)b^{'}(t)\end{aligned}\end{align} \]</div>
+<p>with the multiplication and division of taylor series, we have the final iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{[n]}(t) &amp; = \frac{1}{n(-1+h^{[0]}(t))}\left[nb^{[n]}(t)-\sum_{j=1}^{n-1}j a^{[j]}(t) h^{[n-j]}(t)\right]\\h^{[n]}(t) &amp; = -\dfrac{2}{n} \sum\limits_{j=0}^{n-1}(n-j)b^{[j]}(t)b^{[n-j]}(t)\end{aligned}\end{align} \]</div>
+</section>
+<section id="inverse-hyperbolic-cotangent">
+<h3>Inverse hyperbolic cotangent<a class="headerlink" href="#inverse-hyperbolic-cotangent" title="Link to this heading"></a></h3>
+<p>For <span class="math notranslate nohighlight">\(a(t) = \operatorname{arccoth} (b(t))\)</span>, let:</p>
+<div class="math notranslate nohighlight">
+\[h(b(t)) = -b^2(t)\]</div>
+<p>we have:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{'}(t) &amp; = \operatorname{arccoth}^{'} (b(t)) b^{'}(t)\\&amp; = \dfrac{b^{'}(t)}{h(b(t))+1}\\h^{'}(b(t)) &amp; = \left( -b^2(t) \right)^{'}\\&amp; = -2b(t)b^{'}(t)\end{aligned}\end{align} \]</div>
+<p>with the multiplication and division of taylor series, we have the final iterative fomulas:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}a^{[n]}(t) &amp; = \frac{1}{n(1+h^{[0]}(t))}\left[nb^{[n]}(t)-\sum_{j=1}^{n-1}j a^{[j]}(t) h^{[n-j]}(t)\right]\\h^{[n]}(t) &amp; = -\dfrac{2}{n} \sum\limits_{j=0}^{n-1}(n-j)b^{[j]}(t)b^{[n-j]}(t)\end{aligned}\end{align} \]</div>
+</section>
+</section>
+<section id="self-adaptive-algorithm">
+<h2>Self-Adaptive Algorithm<a class="headerlink" href="#self-adaptive-algorithm" title="Link to this heading"></a></h2>
+<p>Using the above basic arithmetic of Taylor series, we can get the arbitrary derivative of the function. When the total calculation time of the dynamical system is decided, the order of the Taylor series method and word size of the program is settled. But when the calculation progresses over time, the average noise will growth which make the order and word size are meaningless to maintain with the same value. So we need to use the self-adaptive algorithm to speed up the calculation.</p>
+<p>Following Qin and Liao, the word size of the program is defined as:</p>
+<div class="math notranslate nohighlight">
+\[N_s=\left\lceil\frac{\gamma \kappa\left(T_c-t^{\prime}\right)}{\ln 10}-\log _{10} \varepsilon_c\right\rceil\]</div>
+<p>where the <span class="math notranslate nohighlight">\(\gamma\)</span> is safety factor greater than 1, <span class="math notranslate nohighlight">\(\kappa\)</span> is the noise-growing exponent, <span class="math notranslate nohighlight">\(T_c\)</span> is the critical predictable time, <span class="math notranslate nohighlight">\(t^{\prime}\)</span> is the current time, <span class="math notranslate nohighlight">\(\varepsilon_c\)</span> is the critical predictable error, and <span class="math notranslate nohighlight">\(\lceil \cdot \rceil\)</span> is ceiling function.</p>
+<p>the order of the Taylor series method is defined as:</p>
+<div class="math notranslate nohighlight">
+\[M = \left\lceil -1.5\log_{10}(tol) \right\rceil = \left\lceil 1.5N_s \right\rceil\]</div>
+<p>It should be noted that the number 1.5 in order of the Taylor series method is a empirical value, which can be changed according to the specific situation. According to <span id="id3">[<a class="reference internal" href="#id8" title="Àngel Jorba and Maorong Zou. A software package for the numerical integration of odes by means of high-order taylor methods. Experimental Mathematics, 14(1):99–117, 2005.">T3</a>]</span>, for non-multi process the order of the Taylor series method is defined as:</p>
+<div class="math notranslate nohighlight">
+\[M = \left\lceil 1.15N_s + 1 \right\rceil\]</div>
+<p>Following Barrio et al. <span id="id4">[<a class="reference internal" href="#id10" title="R Barrio, F Blesa, and M Lara. Vsvo formulation of the taylor method for the numerical solution of odes. Computers &amp; mathematics with Applications, 50(1-2):93–111, 2005.">T4</a>]</span>, the optimal time stepsize is given by:</p>
+<div class="math notranslate nohighlight">
+\[\Delta t=\min \left(\frac{\operatorname{tol}^{\frac{1}{M}}}{\left\|x_i^{[M-1]}(t)\right\|_{\infty}^{\frac{1}{M-1}}}, \frac{\operatorname{tol}^{\frac{1}{M+1}}}{\left\|x_i^{[M]}(t)\right\|_{\infty}^{\frac{1}{M}}}\right)\]</div>
+</section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading"></a></h2>
+<div class="docutils container" id="id5">
+<div role="list" class="citation-list">
+<div class="citation" id="id6" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">T1</a><span class="fn-bracket">]</span></span>
+<p>Shijun Liao. On the reliability of computed chaotic solutions of non-linear differential equations. <em>Tellus A: Dynamic Meteorology and Oceanography</em>, 61(4):550–564, 2008.</p>
+</div>
+<div class="citation" id="id7" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">T2</a><span class="fn-bracket">]</span></span>
+<p>Shi-jun Liao. On the clean numerical simulation (cns) of chaotic dynamic systems. <em>Journal of Hydrodynamics, Ser. B</em>, 29(5):729–747, 2017.</p>
+</div>
+<div class="citation" id="id8" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">T3</a><span class="fn-bracket">]</span></span>
+<p>Àngel Jorba and Maorong Zou. A software package for the numerical integration of odes by means of high-order taylor methods. <em>Experimental Mathematics</em>, 14(1):99–117, 2005.</p>
+</div>
+<div class="citation" id="id10" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">T4</a><span class="fn-bracket">]</span></span>
+<p>R Barrio, F Blesa, and M Lara. Vsvo formulation of the taylor method for the numerical solution of odes. <em>Computers &amp; mathematics with Applications</em>, 50(1-2):93–111, 2005.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="whycns.html" class="btn btn-neutral float-left" title="Why CNS?" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="Lorenz63_eqs.html" class="btn btn-neutral float-right" title="Example: Lorenz63 Equations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Copyright (C) 2023 Shanghai Jiao Tong University and Authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
